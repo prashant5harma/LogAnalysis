@@ -1,19 +1,14 @@
-from pyspark import SparkConf, SparkContext
+#!/usr/bin/env python
+Q 1
+import sys
+from pyspark import SparkContext, SparkConf
 
-text_file = sc.textFile("/Users/prashantsharma/Documents/LogAnalysis/input.txt")
-#counts = text_file.flatMap(lambda line: line.split(" ")) \
-#             .map(lambda word: (word, 1)) \
-#             .reduceByKey(lambda a, b: a + b)
-#counts.saveAsTextFile("/Users/prashantsharma/Documents/LogAnalysis/output.txt")
+conf = SparkConf().setAppName("ass").setMaster("local")
+sc = SparkContext(conf=conf)
 
+input_text_file=sys.argv[1]
+output_text_file=sys.argv[2]
 
-# Creates a DataFrame having a single column named "line"
-df = text_file.map(lambda r: Row(r)).toDF(["line"])
-errors = df.filter(col("line").like("errors"))
-# Counts all the errors
-print(errors.count())
+counts=sc.textFile(input_text_file).flatMap(lambda x: x.split()).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
 
-# Counts errors mentioning MySQL
-#errors.filter(col("line").like("%MySQL%")).count()
-# Fetches the MySQL errors as an array of strings
-#errors.filter(col("line").like("%MySQL%")).collect()
+counts.saveAsTextFile(output_text_file)
