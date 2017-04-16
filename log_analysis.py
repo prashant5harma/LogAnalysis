@@ -14,6 +14,12 @@ counts=sc.textFile(input_text_file).flatMap(lambda x: x.split()).map(lambda x: (
 counts.saveAsTextFile(output_text_file)
 
 
+Q 2
+counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).filter(lambda line: "achille" in line)
+
+counts=sc.textFile(input_text_file).filter(lambda line: "starting session" in line).flatMap(lambda x: x.split()[-1]).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
+
+
 
 
 Q 3
