@@ -17,7 +17,8 @@ counts.saveAsTextFile(output_text_file)
 
 
 Q 3
-counts=sc.textFile("testt.txt").map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
+counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+
 
 
 Q 5
@@ -28,3 +29,12 @@ text_file = sc.textFile("testt.txt")
 df = text_file.map(lambda r: Row(r)).toDF(["line"])
 df.show()
 df.filter(lower(df['line']).rlike("qwrwret") ).count()
+
+
+Q 7
+
+count1=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
+
+count2=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
+
+count1.intersection(count2).collect()
