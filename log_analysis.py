@@ -62,3 +62,21 @@ count1=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).
 count2=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
 
 count1.intersection(count2).collect()
+
+
+
+
+
+
+Q 8
+
+
+count1=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
+
+count2=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
+
+intersection = count1.intersection(count2)
+
+union = count1.union(count2)
+
+union.subtract(intersection).collect()
