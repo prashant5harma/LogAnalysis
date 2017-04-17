@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 Q 1
+
 first_target_file = "/home/mahdiye/Downloads/odyssey"
 second_target_file = "/home/mahdiye/Downloads/iliad"
 first_logs = sc.textFile(first_target_file)
@@ -9,19 +10,19 @@ second_logs.count()
 
 
 Q 2
-counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).filter(lambda line: "achille" in line)
+counts=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).filter(lambda line: "achille" in line)
 
-counts=sc.textFile(input_text_file).filter(lambda line: "starting session" in line).flatMap(lambda x: x.split()[-1]).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
+counts=sc.textFile(input_text_file).filter(lambda line: "Starting Session" in line).flatMap(lambda x: x.split()[-1]).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
 
 
 
 
 Q 3
-counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+counts=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
 
 
 Q 4
-counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).map(lambda x:(x,1)).reduceByKey(lambda x,y: x+y)
+counts=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).map(lambda x:(x,1)).reduceByKey(lambda x,y: x+y)
 
 
 Q 5
