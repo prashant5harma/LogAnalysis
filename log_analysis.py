@@ -38,3 +38,45 @@ count1=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).
 count2=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
 
 count1.intersection(count2).collect()
+
+Q 9
+#Start
+from pyspark.sql import Row
+from pyspark.sql.functions import *
+
+counts=sc.textFile("iliad").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+#arr = counts.zipWithIndex().collect()
+arr = counts.collect()
+#reff = sc.parallelize(arr).map(lambda x:(x[0],"user-"+str(x[1])))
+
+# to remove the full stop
+arr = [word[:-1] for word in arr]
+
+#Loop to find all words in arr and replace them
+for word in arr:
+    a = word
+    b = "User" + str(arr.index(word))
+    a
+    b
+    df.replace([a],[b])
+#[ for word in arr]
+
+#make a df of the text file
+text_file = sc.textFile("iliad")
+df = text_file.map(lambda r: Row(r)).toDF(["line"])
+
+#write df to file
+import os
+cwd = os.getcwd()
+fn = cwd + "/Anonymized_logs"
+df.write.format("text").save(fn)
+#End
+
+
+#Not required
+reff = sc.parallelize(arr).map(lambda x:(x[0],"user-"+ arr.index(arr[])))
+reffDef = reff.map(lambda r: Row(r)).toDF(["users"]).show()
+
+text_file = sc.textFile("iliad")
+df = text_file.map(lambda r: Row(r)).toDF(["line"])
+df.show()
