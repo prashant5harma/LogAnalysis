@@ -39,6 +39,21 @@ df = text_file.map(lambda r: Row(r)).toDF(["line"])
 df.show()
 df.filter(lower(df['line']).rlike("qwrwret") ).count()
 
+Q 6
+from pyspark.sql import Row
+from pyspark.sql.functions import *
+from collections import Counter
+text_file = sc.textFile("iliad")
+df = text_file.map(lambda r: Row(r)).toDF(["line"])
+df.show()
+temp = df.select(df.line.substr(16, 10000).alias("newline"))
+err = temp.filter(lower(temp['newline']).rlike("error"))
+err.show()
+arr = err.rdd.map(lambda x: x.newline).collect()
+counter = Counter(arr)
+print("\n".join(map(str, counter.most_common(5))))
+
+
 
 Q 7
 
