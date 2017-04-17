@@ -5,8 +5,9 @@ from pyspark import SparkContext, SparkConf
 
 conf = SparkConf().setAppName("ass").setMaster("local")
 sc = SparkContext(conf=conf)
-
-input_text_file=sys.argv[1]
+#import os
+#cwd = os.getcwd()
+input_text_file= sys.argv[1]
 output_text_file=sys.argv[2]
 
 counts=sc.textFile(input_text_file).flatMap(lambda x: x.split()).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
@@ -15,19 +16,19 @@ counts.saveAsTextFile(output_text_file)
 
 
 Q 2
-counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).filter(lambda line: "achille" in line)
+counts=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).filter(lambda line: "achille" in line)
 
-counts=sc.textFile(input_text_file).filter(lambda line: "starting session" in line).flatMap(lambda x: x.split()[-1]).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
+counts=sc.textFile(input_text_file).filter(lambda line: "Starting Session" in line).flatMap(lambda x: x.split()[-1]).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
 
 
 
 
 Q 3
-counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+counts=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
 
 
 Q 4
-counts=sc.textFile("testt.txt").filter(lambda line: "starting session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).map(lambda x:(x,1)).reduceByKey(lambda x,y: x+y)
+counts=sc.textFile("testt.txt").filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).map(lambda x:(x,1)).reduceByKey(lambda x,y: x+y)
 
 
 Q 5
