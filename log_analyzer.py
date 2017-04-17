@@ -4,6 +4,7 @@ from pyspark.sql import Row
 from pyspark.sql.functions import *
 from collections import Counter
 
+
 q = sys.argv[2]
 fr_hosts = sys.argv[3:]
 
@@ -13,26 +14,26 @@ sc = SparkContext(conf=conf)
 if q == str(1):
    print "* Q1: line counts"
    for word in fr_hosts:
-   		input_text_file = word
-   		output_text_file = "yalla"
-   		print input_text_file
-   		counts=sc.textFile(input_text_file).
-
-   		counts=sc.textFile(input_text_file).flatMap(lambda x: x.split()).map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y)
-		counts.saveAsTextFile(output_text_file)
-		#print counts
-		#res = "  +  " + word + ":  " + str(counts)
-		#print "COUNTS :  "
-   
-  
+       input_text_file = word
+       log = sc.textFile(input_text_file)
+       cnt = log.count()
+       res = "  +  " + word + ":  " + str(cnt)
+       print res
 
 elif q == str(2):
    print "* Q2: sessions of user achille"
-   print q
+   for word in fr_hosts:
+       log = sc.textFile(word).filter(lambda line: "Starting Session" in line).filter(lambda line: "achille" in line)
+       cnt = log.count()
+       res = "  +  " + word + ":  " + str(cnt)
+       print res
 
 elif q == str(3):
    print "* Q3: unique user names"
-   print q
+   for word in fr_hosts:
+       log = sc.textFile(word).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct().collect()
+       res = "  +  " + word + ":  " + str(log)
+       print res
 
 elif q == str(4):
    print "* Q4: sessions per user"
