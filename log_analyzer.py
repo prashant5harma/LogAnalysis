@@ -82,12 +82,35 @@ elif q == str(8):
     v1 = sys.argv[3]
     v2 = sys.argv[4]
     print "* Q8: users who started a session on exactly one host, with host name."
-    con1=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (v1, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
-    con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (v2, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
+    con1=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+    con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+    cona = con1.collect()
+    conb = con2.collect()
     intersection = con1.intersection(con2)
     union = con1.union(con2)
     cnt = union.subtract(intersection).distinct().collect()
-    print " + : " + str(cnt)
+    for val in cnt:
+        print val
+        if val in cona:
+            print "CON111"
+            print cnt
+        elif val in conb:
+            print "CON222"
+
+    #print " + : " + str(cnt)
+
+    #intersection = con1.cogroup(con2).filter(lambda x: x[1][0] and x[1][1])
+    #final_rdd = intersection.map(lambda x: (x[0], list(x[1][0]))).map(lambda (x,y): (x, y[0]))
+    #con1=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
+    #con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (2, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
+    #print "CON1 : " + str(con1.collect())
+    #print "CON2 : " + str(con2.collect())
+    #intersection = con1.intersection(con2)
+    #print "INTERSECTION : " + str(intersection.collect())
+    #union = con1.union(con2)
+    #print str(union.collect())
+    #cnt = union.subtract(intersection).distinct().collect()
+    #print " + : " + str(cnt)
 
 
 
