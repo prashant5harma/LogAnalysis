@@ -8,8 +8,7 @@ from pyspark.sql import SparkSession
 
 q = sys.argv[2]
 fr_hosts = sys.argv[3:]
-v1 = sys.argv[3]
-v2 = sys.argv[4]
+
 
 conf = SparkConf().setAppName("ass").setMaster("local")
 sc = SparkContext(conf=conf)
@@ -33,8 +32,9 @@ elif q == str(2):
 elif q == str(3):
    print "* Q3: unique user names"
    for word in fr_hosts:
+       print word
        log = sc.textFile(word).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct().collect()
-       log = [word[:-1] for word in log]
+       log = [wrd[:-1] for wrd in log]
        res = "  +  " + word + ":  " + str(log)
        print res
 
@@ -79,13 +79,14 @@ elif q == str(7):
    print " + : " + str(cnt)
 
 elif q == str(8):
-   print "* Q8: users who started a session on exactly one host, with host name."
-   con1=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
-   con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
-   intersection = con1.intersection(con2)
-   union = con1.union(con2)
-   cnt = union.subtract(intersection).distinct().collect()
-   print " + : " + str(cnt)
+    v1 = sys.argv[3]
+    v2 = sys.argv[4]
+    print "* Q8: users who started a session on exactly one host, with host name."
+    con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1])
+    intersection = con1.intersection(con2)
+    union = con1.union(con2)
+    cnt = union.subtract(intersection).distinct().collect()
+    print " + : " + str(cnt)
 
 elif q == str(9):
    print "Question number 9"
