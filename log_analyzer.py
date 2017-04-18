@@ -1,5 +1,4 @@
 import sys
-import pandas as pd
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import Row
 from pyspark.sql.functions import *
@@ -105,17 +104,16 @@ elif q == str(9):
     arr = counts.collect()
     # to remove the full stop
     arr = [word[:-1] for word in arr]
-    print str(arr)
     #make a df of the text file
     text_file = sc.textFile(v1)
-    df = pd.DataFrame(text_file.map(lambda r: Row(r)).toDF(["line"]))
+    df = text_file.map(lambda r: Row(r)).toDF(["line"])
     #Loop to find all words in arr and replace them
     dlist = [["try","try"]]
     for word in arr:
         a = word
         b = "User-" + str(arr.index(word))
         dlist.append([a,b])
-        df.replace('achille', b, inplace=True)
+        df.replace(a,b)
     dlist.remove(["try","try"])
     print " + : " + str(dlist)
     #write df to file
