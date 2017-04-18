@@ -89,35 +89,19 @@ elif q == str(8):
     intersection = con1.intersection(con2)
     union = con1.union(con2)
     cnt = union.subtract(intersection).distinct().collect()
-    for val in cnt:
-        print val
-        if val in cona:
-            print "CON111"
-            print cnt
-        elif val in conb:
-            print "CON222"
-
-    #print " + : " + str(cnt)
-
-    #intersection = con1.cogroup(con2).filter(lambda x: x[1][0] and x[1][1])
-    #final_rdd = intersection.map(lambda x: (x[0], list(x[1][0]))).map(lambda (x,y): (x, y[0]))
-    #con1=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
-    #con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (2, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
-    #print "CON1 : " + str(con1.collect())
-    #print "CON2 : " + str(con2.collect())
-    #intersection = con1.intersection(con2)
-    #print "INTERSECTION : " + str(intersection.collect())
-    #union = con1.union(con2)
-    #print str(union.collect())
-    #cnt = union.subtract(intersection).distinct().collect()
-    #print " + : " + str(cnt)
 
 
 
 elif q == str(9):
-   print "Question number 9"
-   print q
+from pyspark.sql import Row
+from pyspark.sql.functions import *
+counts=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+arr = counts.zipWithIndex().collect()
+reff = sc.parallelize(arr).map(lambda x:(x[0],"user-"+str(x[1])))
+reffDef = reff.map(lambda r: Row(r)).toDF(["users"]).show()
 
-else:
-   print "INVALID QUESTION NUMBER:"
-   print q
+
+counts2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (1, x.split()[::-1])).map(lambda x:(x[0],x[1][0])).map(lambda x:x[1]).distinct()
+arr2 = counts2.zipWithIndex().collect()
+reff2 = sc.parallelize(arr2).map(lambda x:(x[0],"user-"+str(x[1])))
+reffDef2 = reff2.map(lambda r: Row(r)).toDF(["users"]).show()
