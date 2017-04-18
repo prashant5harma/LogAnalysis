@@ -79,6 +79,7 @@ elif q == str(7):
    print " + : " + str(cnt)
 
 elif q == str(8):
+<<<<<<< HEAD
     v1 = sys.argv[3]
     v2 = sys.argv[4]
     print "* Q8: users who started a session on exactly one host, with host name."
@@ -87,6 +88,16 @@ elif q == str(8):
     union = con1.union(con2)
     cnt = union.subtract(intersection).distinct().collect()
     print " + : " + str(cnt)
+=======
+   print "* Q8: users who started a session on exactly one host, with host name."
+   con1=sc.textFile(v1).filter(lambda line: "Starting Session" in line).map(lambda x: (v1, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
+   con2=sc.textFile(v2).filter(lambda line: "Starting Session" in line).map(lambda x: (v2, x.split()[::-1])).map(lambda x:(x[0],x[1][0]))
+   intersection = con1.intersection(con2)
+   union = con1.union(con2)
+   cnt = union.subtract(intersection).distinct().collect()
+   print " + : " + str(cnt)
+>>>>>>> origin/master
+
 
 elif q == str(9):
    print "Question number 9"
